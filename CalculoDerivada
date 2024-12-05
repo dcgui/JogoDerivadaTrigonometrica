@@ -1,0 +1,73 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Dados das funções e suas derivadas
+        String[][] tabela = {
+            {"sen(x)", "cos(x)"},
+            {"cos(x)", "-sen(x)"},
+            {"tg(x)", "sec^2(x)"},
+            {"sec(x)", "tg(x) * sec(x)"},
+            {"cosec(x)", "-cotg(x) * cosec(x)"},
+            {"cotg(x)", "-cosec^2(x)"}
+        };
+
+        System.out.println("Bem-vindo ao jogo de derivadas!");
+        System.out.println("Escolha a derivada correta para cada função.");
+
+        int pontos = 0;
+
+        // Embaralha a ordem das perguntas
+        List<Integer> indices = new ArrayList<>();
+        for (int i = 0; i < tabela.length; i++) {
+            indices.add(i);
+        }
+        Collections.shuffle(indices); // Embaralha a lista de índices
+
+        // Loop pelas perguntas
+        for (int i : indices) {
+            System.out.println("\nQual é a derivada de f(x) = " + tabela[i][0] + "?");
+
+            // Cria uma lista de alternativas com a resposta correta e duas erradas
+            List<String> alternativas = new ArrayList<>();
+            alternativas.add(tabela[i][1]); // Adiciona a resposta correta
+
+            // Seleciona duas respostas incorretas aleatórias
+            Random random = new Random();
+            while (alternativas.size() < 3) {
+                int indexIncorreto = random.nextInt(tabela.length);
+                if (indexIncorreto != i && !alternativas.contains(tabela[indexIncorreto][1])) {
+                    alternativas.add(tabela[indexIncorreto][1]);
+                }
+            }
+
+            // Embaralha as alternativas
+            Collections.shuffle(alternativas);
+
+            // Exibe as alternativas com números (1, 2, 3)
+            for (int k = 0; k < alternativas.size(); k++) {
+                System.out.println((k + 1) + ") " + alternativas.get(k));
+            }
+
+            // Solicita a resposta
+            System.out.print("Sua resposta (1-3): ");
+            int respostaUsuario = scanner.nextInt();
+
+            // Verifica se a resposta está correta
+            boolean correta = alternativas.get(respostaUsuario - 1).equals(tabela[i][1]);
+
+            if (correta) {
+                System.out.println("Correto!");
+                pontos++;
+            } else {
+                System.out.println("Errado! A resposta correta é: " + tabela[i][1]);
+            }
+        }
+
+        // Exibe o resultado final
+        System.out.println("\nJogo encerrado! Você marcou " + pontos + " ponto(s) de " + tabela.length + ".");
+        scanner.close();
+    }
+}
